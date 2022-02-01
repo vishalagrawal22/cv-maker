@@ -9,7 +9,7 @@ import {
 describe('Project Factory tests', () => {
   test('getters work', () => {
     const project = ProjectFactory(
-      'Todo list',
+      'Todo List',
       'https://example.com/elit/todo-list',
       'https://elit.example.io/todo-list',
       ['HTML', 'SCSS', 'Javascript(Jquery)'],
@@ -35,7 +35,7 @@ describe('Project Factory tests', () => {
 describe('ProjectItem component test', () => {
   test('If provided with everything renders all', () => {
     const project = ProjectFactory(
-      'Todo list',
+      'Todo List',
       'https://example.com/elit/todo-list',
       'https://elit.example.io/todo-list',
       ['HTML', 'SCSS', 'Javascript(Jquery)'],
@@ -76,10 +76,10 @@ describe('ProjectSection component test', () => {
     expect(screen.getByText(/projects/i)).toBeInTheDocument();
   });
 
-  test.only('renders all project provided', () => {
+  test('renders all project provided', () => {
     const projects = [
       ProjectFactory(
-        'Todo list',
+        'Todo List',
         'https://example.com/elit/todo-list',
         'https://elit.example.io/todo-list',
         ['HTML', 'SCSS', 'Javascript(Jquery)'],
