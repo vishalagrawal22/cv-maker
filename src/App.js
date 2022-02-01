@@ -1,11 +1,9 @@
 import { Component } from 'react';
-import { EducationFactory, EducationSection } from './components/Education';
-import { ProjectFactory, ProjectSection } from './components/Project';
-import {
-  WorkExperienceFactory,
-  WorkExperienceSection,
-} from './components/WorkExperience';
-import { UserInfoFactory, UserInfoSection } from './components/UserInfo';
+import { EducationFactory } from './components/Education';
+import { ProjectFactory } from './components/Project';
+import { WorkExperienceFactory } from './components/WorkExperience';
+import { UserInfoFactory } from './components/UserInfo';
+import { Resume } from './components/Resume';
 
 class App extends Component {
   render() {
@@ -61,10 +59,12 @@ class App extends Component {
 
     return (
       <div>
-        <UserInfoSection userInfo={userInfo} />
-        <EducationSection educations={educations} />
-        <WorkExperienceSection workExperiences={workExperiences} />
-        <ProjectSection projects={projects} />
+        <Resume
+          educations={educations}
+          workExperiences={workExperiences}
+          userInfo={userInfo}
+          projects={projects}
+        />
       </div>
     );
   }
