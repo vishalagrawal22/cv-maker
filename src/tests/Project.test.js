@@ -1,6 +1,10 @@
 import { screen, render } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { ProjectFactory, ProjectItem } from '../components/Project';
+import {
+  ProjectFactory,
+  ProjectItem,
+  ProjectSection,
+} from '../components/Project';
 
 describe('Project Factory tests', () => {
   test('getters work', () => {
@@ -72,5 +76,44 @@ describe('ProjectItem component test', () => {
     expect(projectHostingUrl).not.toBeInTheDocument();
     expect(projectTechStack).not.toBeInTheDocument();
     expect(projectDescription).not.toBeInTheDocument();
+  });
+});
+
+describe('ProjectSection component test', () => {
+  test('sets heading as projects', () => {
+    render(<ProjectSection projects={[]} />);
+    expect(screen.getByText(/projects/i)).toBeInTheDocument();
+  });
+
+  test('renders all project provided', () => {
+    const projects = [
+      ProjectFactory(
+        'Competitive Programming Practice Tool',
+        'https://github.com/vishalagrawal22/CPPT',
+        '',
+        ['Python - Click, PyYaml, Pathlib, Subprocess Libraries', 'Yaml'],
+        "A command-line tool to automate competitive programming workflow without cluttering the user's workspace with test case data."
+      ),
+      ProjectFactory(
+        'Tag Hider CodeForces',
+        'https://github.com/vishalagrawal22/tag-hider-codeforces',
+        '',
+        ['JavaScript(Jquery)', 'CodeForces API'],
+        'The UserScript adds a button to toggle on/off problem tags on codeforces from the problem page itself. I also wrote a blog sharing the script with the cf community link to cf blog.'
+      ),
+      ProjectFactory(
+        'Covid Statistics',
+        'https://github.com/vishalagrawal22/covid-statistics',
+        'https://vishalagrawal22.github.io/covid-statistics/',
+        ['JavaScript(Jquery)', 'covid stats and reverse geocoding APIs'],
+        'A simple website which shows covid stats of the world, user’s location or any specific state of any country.'
+      ),
+    ];
+    render(<ProjectSection projects={projects} />);
+    expect(
+      screen.getByText(/Competitive Programming Practice Tool/i)
+    ).toBeInTheDocument();
+    expect(screen.getByText(/Tag Hider CodeForces/i)).toBeInTheDocument();
+    expect(screen.getByText(/Covid Statistics/i)).toBeInTheDocument();
   });
 });

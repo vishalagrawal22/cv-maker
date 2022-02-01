@@ -1,15 +1,24 @@
 import { Component } from 'react';
 import { renderIfTrue } from '../utils/helper-functions';
+import { Section } from './Section';
+import uniqid from 'uniqid';
 
-function ProjectFactory(name, codeUrl, hostingUrl, techStack, description) {
-  return { name, codeUrl, hostingUrl, techStack, description };
+function ProjectFactory(
+  name,
+  codeUrl,
+  hostingUrl,
+  techStack,
+  description,
+  id = uniqid('Project-')
+) {
+  return { id, name, codeUrl, hostingUrl, techStack, description };
 }
 
 class ProjectItem extends Component {
   render() {
     const { project } = this.props;
     return (
-      <div>
+      <li>
         {renderIfTrue(
           project.name !== '',
           <div>Project Name: {project.name}</div>
@@ -50,9 +59,22 @@ class ProjectItem extends Component {
           project.description !== '',
           <div>Description: {project.description}</div>
         )}
-      </div>
+      </li>
     );
   }
 }
 
-export { ProjectFactory, ProjectItem };
+class ProjectSection extends Component {
+  render() {
+    const { projects } = this.props;
+    return (
+      <Section header="Projects">
+        {projects.map((project) => (
+          <ProjectItem key={project.id} project={project} />
+        ))}
+      </Section>
+    );
+  }
+}
+
+export { ProjectFactory, ProjectItem, ProjectSection };
