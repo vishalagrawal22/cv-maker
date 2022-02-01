@@ -19,30 +19,27 @@ class ProjectItem extends Component {
     const { project } = this.props;
     return (
       <li>
-        {renderIfTrue(
-          project.name !== '',
-          <div>Project Name: {project.name}</div>
-        )}
+        {renderIfTrue(project.name !== '', <div>{project.name}</div>)}
         {renderIfTrue(
           project.codeUrl !== '' || project.hostingUrl !== '',
           <div className="action-links">
             {renderIfTrue(
               project.codeUrl !== '',
-              <div>
-                <a href={project.codeUrl} rel="noreferrer" target="_blank">
-                  View Code
-                </a>
-              </div>
+              <a href={project.codeUrl} rel="noreferrer" target="_blank">
+                View Code
+              </a>
             )}
             {renderIfTrue(
               project.hostingUrl !== '',
-              <div>
-                <a href={project.hostingUrl} rel="noreferrer" target="_blank">
-                  Live Preview
-                </a>
-              </div>
+              <a href={project.hostingUrl} rel="noreferrer" target="_blank">
+                Live Preview
+              </a>
             )}
           </div>
+        )}
+        {renderIfTrue(
+          project.description !== '',
+          <div>{project.description}</div>
         )}
         {renderIfTrue(
           project.techStack.length !== 0,
@@ -54,10 +51,6 @@ class ProjectItem extends Component {
               ))}
             </ul>
           </div>
-        )}
-        {renderIfTrue(
-          project.description !== '',
-          <div>Description: {project.description}</div>
         )}
       </li>
     );
