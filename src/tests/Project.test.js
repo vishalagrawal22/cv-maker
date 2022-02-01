@@ -9,33 +9,24 @@ import {
 describe('Project Factory tests', () => {
   test('getters work', () => {
     const project = ProjectFactory(
-      'Covid Statistics',
-      'https://github.com/vishalagrawal22/covid-statistics',
-      'https://vishalagrawal22.github.io/covid-statistics/',
-      ['Javascript(Jquery)', 'Covid statistics and reverse geocoding APIs'],
-      'A simple website which shows covid statistics of the world, user’s location or any specific state of any country.'
+      'Todo list',
+      'https://example.com/elit/todo-list',
+      'https://elit.example.io/todo-list',
+      ['HTML', 'SCSS', 'Javascript(Jquery)'],
+      'A simple todo-list with jquery'
     );
 
-    expect(project.name).toBe('Covid Statistics');
+    expect(project.name).toBe('Todo List');
 
-    expect(project.codeUrl).toBe(
-      'https://github.com/vishalagrawal22/covid-statistics'
-    );
+    expect(project.codeUrl).toBe('https://example.com/elit/todo-list');
 
-    expect(project.hostingUrl).toBe(
-      'https://vishalagrawal22.github.io/covid-statistics/'
-    );
+    expect(project.hostingUrl).toBe('https://elit.example.io/todo-list');
 
     expect(project.techStack).toEqual(
-      expect.arrayContaining([
-        'Javascript(Jquery)',
-        'Covid statistics and reverse geocoding APIs',
-      ])
+      expect.arrayContaining(['HTML', 'SCSS', 'Javascript(Jquery)'])
     );
 
-    expect(project.description).toBe(
-      'A simple website which shows covid statistics of the world, user’s location or any specific state of any country.'
-    );
+    expect(project.description).toBe('A simple todo-list with jquery');
 
     expect(project).toHaveProperty('id');
   });
@@ -44,11 +35,11 @@ describe('Project Factory tests', () => {
 describe('ProjectItem component test', () => {
   test('If provided with everything renders all', () => {
     const project = ProjectFactory(
-      'Covid Statistics',
-      'https://github.com/vishalagrawal22/covid-statistics',
-      'https://vishalagrawal22.github.io/covid-statistics/',
-      ['Javascript(Jquery)', 'covid stats and reverse geocoding APIs'],
-      'A simple website which shows covid stats of the world, user’s location or any specific state of any country.'
+      'Todo list',
+      'https://example.com/elit/todo-list',
+      'https://elit.example.io/todo-list',
+      ['HTML', 'SCSS', 'Javascript(Jquery)'],
+      'A simple todo-list with jquery'
     );
     render(<ProjectItem project={project} />);
 
@@ -85,35 +76,33 @@ describe('ProjectSection component test', () => {
     expect(screen.getByText(/projects/i)).toBeInTheDocument();
   });
 
-  test('renders all project provided', () => {
+  test.only('renders all project provided', () => {
     const projects = [
       ProjectFactory(
-        'Competitive Programming Practice Tool',
-        'https://github.com/vishalagrawal22/CPPT',
-        '',
-        ['Python - Click, PyYaml, Pathlib, Subprocess Libraries', 'Yaml'],
-        "A command-line tool to automate competitive programming workflow without cluttering the user's workspace with test case data."
+        'Todo list',
+        'https://example.com/elit/todo-list',
+        'https://elit.example.io/todo-list',
+        ['HTML', 'SCSS', 'Javascript(Jquery)'],
+        'A simple todo-list with jquery'
       ),
       ProjectFactory(
-        'Tag Hider CodeForces',
-        'https://github.com/vishalagrawal22/tag-hider-codeforces',
+        'COVID Tracker App',
+        'https://example.com/elit/covid-tracker',
         '',
-        ['JavaScript(Jquery)', 'CodeForces API'],
-        'The UserScript adds a button to toggle on/off problem tags on codeforces from the problem page itself. I also wrote a blog sharing the script with the cf community link to cf blog.'
-      ),
-      ProjectFactory(
-        'Covid Statistics',
-        'https://github.com/vishalagrawal22/covid-statistics',
-        'https://vishalagrawal22.github.io/covid-statistics/',
-        ['JavaScript(Jquery)', 'covid stats and reverse geocoding APIs'],
+        ['JavaScript(Jquery)', 'Covid API'],
         'A simple website which shows covid stats of the world, user’s location or any specific state of any country.'
+      ),
+      ProjectFactory(
+        'Movie Database',
+        'https://example.com/elit/movie-database',
+        '',
+        ['MongoDB', 'Express', 'React', 'NodeJS'],
+        ''
       ),
     ];
     render(<ProjectSection projects={projects} />);
-    expect(
-      screen.getByText(/Competitive Programming Practice Tool/i)
-    ).toBeInTheDocument();
-    expect(screen.getByText(/Tag Hider CodeForces/i)).toBeInTheDocument();
-    expect(screen.getByText(/Covid Statistics/i)).toBeInTheDocument();
+    expect(screen.getByText(/Todo list/i)).toBeInTheDocument();
+    expect(screen.getByText(/COVID Tracker App/i)).toBeInTheDocument();
+    expect(screen.getByText(/Movie Database/i)).toBeInTheDocument();
   });
 });
