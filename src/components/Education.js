@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import { Section } from './Section';
-import { renderIfTrue } from '../utils/helper-functions';
+import { renderIfTrue, conditionalRender } from '../utils/helper-functions';
 import uniqid from 'uniqid';
 
 function EducationFactory(
@@ -32,12 +32,14 @@ class EducationItem extends Component {
         <div>
           {renderIfTrue(
             education.start !== '',
-            <span>{education.start} - </span>
-          )}
-          {renderIfTrue(education.end !== '', <span>{education.end}</span>)}
-          {renderIfTrue(
-            education.end === '' && education.start !== '',
-            <span>{'Present'}</span>
+            <span>
+              {education.start} -
+              {conditionalRender(
+                education.end !== '',
+                <span> {education.end}</span>,
+                <span> {'Present'}</span>
+              )}
+            </span>
           )}
         </div>
       </li>

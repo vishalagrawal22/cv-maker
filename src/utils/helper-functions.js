@@ -1,8 +1,13 @@
-function renderIfTrue(condition, element) {
+function conditionalRender(condition, trueElement, falseElement) {
   if (condition) {
-    return element;
+    return trueElement;
+  } else {
+    return falseElement;
   }
-  return null;
 }
 
-export { renderIfTrue };
+function renderIfTrue(condition, element) {
+  return conditionalRender(condition, element, null);
+}
+
+export { renderIfTrue, conditionalRender };
