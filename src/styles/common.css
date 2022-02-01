@@ -7,3 +7,12 @@ html {
 *::after {
   box-sizing: inherit;
 }
+
+label {
+  display: block;
+}
+
+button {
+  display: block;
+  padding: 8px 16px;
+}
