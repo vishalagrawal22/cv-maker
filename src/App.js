@@ -1,69 +1,60 @@
 import { Component } from 'react';
-import { EducationFactory } from './components/Education';
-import { ProjectFactory } from './components/Project';
-import { WorkExperienceFactory } from './components/WorkExperience';
-import { UserInfoFactory } from './components/UserInfo';
-import { Resume } from './components/Resume';
+import { UserInfoFactory, InputUserInfoSection } from './components/UserInfo';
+import { deepCopy } from './utils/helper-functions';
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      userInfo: UserInfoFactory('', '', ''),
+      userInfoFormValues: { ...UserInfoFactory('', '', ''), editMode: true },
+    };
+    this.handleUserInfoChange = this.handleUserInfoChange.bind(this);
+    this.handleUserInfoSubmit = this.handleUserInfoSubmit.bind(this);
+    this.handleUserInfoStartEditMode =
+      this.handleUserInfoStartEditMode.bind(this);
+  }
+
+  handleUserInfoStartEditMode() {
+    this.setState((prevState) => {
+      const userInfoFormValues = deepCopy(prevState.userInfo);
+      userInfoFormValues.editMode = true;
+      return {
+        userInfoFormValues,
+      };
+    });
+  }
+
+  handleUserInfoChange(event) {
+    this.setState((prevState) => {
+      const userInfoFormValues = deepCopy(prevState.userInfoFormValues);
+      userInfoFormValues[event.target.id] = event.target.value;
+      return {
+        userInfoFormValues,
+      };
+    });
+  }
+
+  handleUserInfoSubmit() {
+    this.setState((prevState) => {
+      const userInfoFormValues = deepCopy(prevState.userInfoFormValues);
+      delete userInfoFormValues.editMode;
+      return {
+        userInfo: userInfoFormValues,
+        userInfoFormValues: { ...UserInfoFactory('', '', ''), editMode: false },
+      };
+    });
+  }
+
   render() {
-    const educations = [
-      EducationFactory(
-        'Utah University',
-        'BA in Cloud Systems',
-        '8.5 CGPA',
-        '2013',
-        '2016'
-      ),
-    ];
-
-    const projects = [
-      ProjectFactory(
-        'Todo list',
-        'https://example.com/elit/todo-list',
-        'https://elit.example.io/todo-list',
-        ['HTML', 'SCSS', 'Javascript(Jquery)'],
-        'A simple todo-list with jquery'
-      ),
-      ProjectFactory(
-        'COVID Tracker App',
-        'https://example.com/elit/covid-tracker',
-        '',
-        ['JavaScript(Jquery)', 'Covid API'],
-        'A simple website which shows covid stats of the world, user’s location or any specific state of any country.'
-      ),
-      ProjectFactory(
-        'Movie Database',
-        'https://example.com/elit/movie-database',
-        '',
-        ['MongoDB', 'Express', 'React', 'NodeJS'],
-        ''
-      ),
-    ];
-
-    const workExperiences = [
-      WorkExperienceFactory(
-        'Hilll, Watsica and Zboncak',
-        'DevOps',
-        'I built the customer-focused value-added project',
-        '2016',
-        '2020'
-      ),
-    ];
-
-    const userInfo = UserInfoFactory(
-      'Skyler Russell',
-      'adipiscing.elit@hotmail.com',
-      '0987 364 5160'
-    );
-
     return (
       <div>
-        <Resume
-          educations={educations}
-          workExperiences={workExperiences}
-          userInfo={userInfo}
-          projects={projects}
+        <InputUserInfoSection
+          userInfo={this.state.userInfo}
+          userInfoFormValues={this.state.userInfoFormValues}
+          onStartEditMode={this.handleUserInfoStartEditMode}
+          onUserInfoSubmit={this.handleUserInfoSubmit}
+          onUserInfoChange={this.handleUserInfoChange}
         />
       </div>
     );

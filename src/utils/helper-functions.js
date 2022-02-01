@@ -10,4 +10,8 @@ function renderIfTrue(condition, element) {
   return conditionalRender(condition, element, null);
 }
 
-export { renderIfTrue, conditionalRender };
+function deepCopy(object) {
+  return JSON.parse(JSON.stringify(object));
+}
+
+export { renderIfTrue, conditionalRender, deepCopy };
