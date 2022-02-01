@@ -19,7 +19,7 @@ class EducationItem extends Component {
     const { education } = this.props;
     return (
       <li>
-        <div>{education.institute}</div>
+        <h4>{education.institute}</h4>
         <div>
           <div>
             {education.degree}

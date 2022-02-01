@@ -19,7 +19,7 @@ class WorkExperienceItem extends Component {
     const { workExperience } = this.props;
     return (
       <li>
-        <div>{workExperience.company}</div>
+        <h4>{workExperience.company}</h4>
         <div>{workExperience.positon}</div>
         {renderIfTrue(
           workExperience.description !== '',
