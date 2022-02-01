@@ -51,13 +51,13 @@ class EducationSection extends Component {
   render() {
     const { educations } = this.props;
     return (
-      <ul>
-        <Section header="Education">
+      <Section header="Education">
+        <ul>
           {educations.map((education) => (
             <EducationItem key={education.id} education={education} />
           ))}
-        </Section>
-      </ul>
+        </ul>
+      </Section>
     );
   }
 }
