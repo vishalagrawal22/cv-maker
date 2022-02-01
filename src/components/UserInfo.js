@@ -1,4 +1,5 @@
 import '../styles/common.css';
+import '../styles/UserInfo.css';
 
 import { Component } from 'react';
 import { conditionalRender } from '../utils/helper-functions';
@@ -53,7 +54,7 @@ function InputUserInfoSectionForm(
           onChange={onUserInfoChange}
           required
         />
-        <button>Submit</button>
+        <button className="submit">Submit</button>
       </form>
     </div>
   );
