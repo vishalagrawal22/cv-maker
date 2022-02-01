@@ -36,6 +36,8 @@ describe('Project Factory tests', () => {
     expect(project.description).toBe(
       'A simple website which shows covid statistics of the world, user’s location or any specific state of any country.'
     );
+
+    expect(project).toHaveProperty('id');
   });
 });
 
