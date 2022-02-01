@@ -10,9 +10,9 @@ class UserInfoSection extends Component {
     const { userInfo } = this.props;
     return (
       <Section header="General Info">
-        <div>Name: {userInfo.name}</div>
-        <div>Email: {userInfo.email}</div>
-        <div>Phone: {userInfo.phone}</div>
+        <div>{userInfo.name}</div>
+        <div>{userInfo.email}</div>
+        <div>{userInfo.phone}</div>
       </Section>
     );
   }
