@@ -45,12 +45,14 @@ class WorkExperienceSection extends Component {
     const { workExperiences } = this.props;
     return (
       <Section header="Work Experience">
-        {workExperiences.map((workExperience) => (
-          <WorkExperienceItem
-            key={workExperience.id}
-            workExperience={workExperience}
-          />
-        ))}
+        <ul>
+          {workExperiences.map((workExperience) => (
+            <WorkExperienceItem
+              key={workExperience.id}
+              workExperience={workExperience}
+            />
+          ))}
+        </ul>
       </Section>
     );
   }

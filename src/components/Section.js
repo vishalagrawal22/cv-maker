@@ -6,7 +6,7 @@ class Section extends Component {
     return (
       <div>
         <h3>{header}</h3>
-        <ul>{children}</ul>
+        {children}
       </div>
     );
   }

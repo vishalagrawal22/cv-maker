@@ -62,9 +62,11 @@ class ProjectSection extends Component {
     const { projects } = this.props;
     return (
       <Section header="Projects">
-        {projects.map((project) => (
-          <ProjectItem key={project.id} project={project} />
-        ))}
+        <ul>
+          {projects.map((project) => (
+            <ProjectItem key={project.id} project={project} />
+          ))}
+        </ul>
       </Section>
     );
   }
