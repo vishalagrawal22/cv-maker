@@ -1,7 +1,10 @@
+import uniqid from 'uniqid';
+
+import '../styles/common.css';
+
 import { Component } from 'react';
 import { renderIfTrue } from '../utils/helper-functions';
 import { Section } from './Section';
-import uniqid from 'uniqid';
 
 function ProjectFactory(
   name,

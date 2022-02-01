@@ -1,3 +1,5 @@
+import '../styles/common.css';
+
 import { Component } from 'react';
 import { UserInfoSection } from './UserInfo';
 import { EducationSection } from './Education';

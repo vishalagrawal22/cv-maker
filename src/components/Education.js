@@ -1,7 +1,10 @@
+import uniqid from 'uniqid';
+
+import '../styles/common.css';
+
 import { Component } from 'react';
 import { Section } from './Section';
 import { renderIfTrue, conditionalRender } from '../utils/helper-functions';
-import uniqid from 'uniqid';
 
 function EducationFactory(
   institute,

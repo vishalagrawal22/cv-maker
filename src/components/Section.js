@@ -1,3 +1,5 @@
+import '../styles/common.css';
+
 import { Component } from 'react';
 
 class Section extends Component {

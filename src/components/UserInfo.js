@@ -1,3 +1,5 @@
+import '../styles/common.css';
+
 import { Component } from 'react';
 import { conditionalRender } from '../utils/helper-functions';
 import { Section } from './Section';
