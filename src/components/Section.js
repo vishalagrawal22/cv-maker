@@ -30,7 +30,7 @@ class InputSection extends Component {
       <Section header={header}>
         {conditionalRender(
           editMode,
-          <div class="input-section-display">
+          <div className="input-section-display">
             {editDisplay}
             <button onClick={onSubmit}>submit</button>
           </div>,
