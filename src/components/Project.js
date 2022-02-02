@@ -22,7 +22,7 @@ class ProjectItem extends Component {
     const { project } = this.props;
     return (
       <li>
-        {renderIfTrue(project.name !== '', <h4>{project.name}</h4>)}
+        <h4>{project.name}</h4>
         {renderIfTrue(
           project.codeUrl !== '' || project.hostingUrl !== '',
           <div className="action-links">
