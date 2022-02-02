@@ -1,9 +1,7 @@
 import '../styles/common.css';
-import '../styles/UserInfo.css';
 
 import { Component } from 'react';
-import { conditionalRender } from '../utils/helper-functions';
-import { Section } from './Section';
+import { Section, InputSection } from './Section';
 
 function UserInfoFactory(name, email, phone) {
   return { name, email, phone };
@@ -22,14 +20,10 @@ class UserInfoSection extends Component {
   }
 }
 
-function InputUserInfoSectionForm(
-  userInfoFormValues,
-  onUserInfoSubmit,
-  onUserInfoChange
-) {
+function InputUserInfoSectionForm(userInfoFormValues, onUserInfoChange) {
   return (
     <div>
-      <form onSubmit={onUserInfoSubmit}>
+      <form>
         <label htmlFor="name">Name:</label>
         <input
           id="name"
@@ -54,19 +48,17 @@ function InputUserInfoSectionForm(
           onChange={onUserInfoChange}
           required
         />
-        <button className="submit">Submit</button>
       </form>
     </div>
   );
 }
 
-function InputUserInfoSectionDisplay(userInfo, onStartEditMode) {
+function InputUserInfoSectionDisplay(userInfo) {
   return (
     <div>
       <div>Name: {userInfo.name}</div>
       <div>Email: {userInfo.email}</div>
       <div>Phone: {userInfo.phone}</div>
-      <button onClick={onStartEditMode}>Edit</button>
     </div>
   );
 }
@@ -80,18 +72,20 @@ class InputUserInfoSection extends Component {
       onUserInfoSubmit,
       onUserInfoChange,
     } = this.props;
+    const editDisplay = InputUserInfoSectionForm(
+      userInfoFormValues,
+      onUserInfoChange
+    );
+    const viewDisplay = InputUserInfoSectionDisplay(userInfo);
     return (
-      <div>
-        {conditionalRender(
-          userInfoFormValues.editMode,
-          InputUserInfoSectionForm(
-            userInfoFormValues,
-            onUserInfoSubmit,
-            onUserInfoChange
-          ),
-          InputUserInfoSectionDisplay(userInfo, onStartEditMode)
-        )}
-      </div>
+      <InputSection
+        header="Enter your general info"
+        onStartEditMode={onStartEditMode}
+        onSubmit={onUserInfoSubmit}
+        editMode={userInfoFormValues.editMode}
+        editDisplay={editDisplay}
+        viewDisplay={viewDisplay}
+      />
     );
   }
 }
