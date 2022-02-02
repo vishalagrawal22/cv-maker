@@ -1,4 +1,4 @@
-import { Section, InputSection } from '../components/Section';
+import { Section, InputSection, InputListSection } from '../components/Section';
 import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
@@ -109,5 +109,121 @@ describe('InputSection component tests', () => {
     expect(screen.getByText('Test Header')).toBeInTheDocument();
     expect(screen.getByText('Edit Mode')).toBeInTheDocument();
     expect(screen.queryByText('View Mode')).not.toBeInTheDocument();
+  });
+});
+
+describe('InputListSection component tests', () => {
+  let header;
+  let editDisplay;
+  let viewDisplay;
+  beforeAll(() => {
+    header = 'Test Header';
+    editDisplay = <div>Edit Mode</div>;
+    viewDisplay = <div>View Mode</div>;
+  });
+
+  test('submit button works', () => {
+    let rerender;
+    const onAddItem = null;
+    const onStartEditMode = null;
+    const onSubmit = jest.fn(() => {
+      rerender(
+        <InputListSection
+          header={header}
+          editMode={false}
+          onStartEditMode={onStartEditMode}
+          onSubmit={onSubmit}
+          editDisplay={editDisplay}
+          viewDisplay={viewDisplay}
+          onAddItem={onAddItem}
+        />
+      );
+    });
+
+    ({ rerender } = render(
+      <InputListSection
+        header={header}
+        editMode={true}
+        onStartEditMode={onStartEditMode}
+        onSubmit={onSubmit}
+        editDisplay={editDisplay}
+        viewDisplay={viewDisplay}
+        onAddItem={onAddItem}
+      />
+    ));
+
+    expect(screen.getByText('Test Header')).toBeInTheDocument();
+    expect(screen.getByText('Edit Mode')).toBeInTheDocument();
+    expect(screen.queryByText('View Mode')).not.toBeInTheDocument();
+
+    userEvent.click(screen.getByText('submit'));
+    expect(onSubmit.mock.calls.length).toBe(1);
+
+    expect(screen.getByText('Test Header')).toBeInTheDocument();
+    expect(screen.queryByText('Edit Mode')).not.toBeInTheDocument();
+    expect(screen.getByText('View Mode')).toBeInTheDocument();
+  });
+
+  test('edit button works', () => {
+    let rerender;
+    const onAddItem = null;
+    const onStartEditMode = jest.fn(() => {
+      rerender(
+        <InputListSection
+          header={header}
+          editMode={true}
+          onStartEditMode={onStartEditMode}
+          onSubmit={onSubmit}
+          editDisplay={editDisplay}
+          viewDisplay={viewDisplay}
+          onAddItem={onAddItem}
+        />
+      );
+    });
+
+    const onSubmit = null;
+
+    ({ rerender } = render(
+      <InputListSection
+        header={header}
+        editMode={false}
+        onStartEditMode={onStartEditMode}
+        onSubmit={onSubmit}
+        editDisplay={editDisplay}
+        viewDisplay={viewDisplay}
+        onAddItem={onAddItem}
+      />
+    ));
+
+    expect(screen.getByText('Test Header')).toBeInTheDocument();
+    expect(screen.queryByText('Edit Mode')).not.toBeInTheDocument();
+    expect(screen.getByText('View Mode')).toBeInTheDocument();
+
+    userEvent.click(screen.getByText('edit'));
+    expect(onStartEditMode.mock.calls.length).toBe(1);
+
+    expect(screen.getByText('Test Header')).toBeInTheDocument();
+    expect(screen.getByText('Edit Mode')).toBeInTheDocument();
+    expect(screen.queryByText('View Mode')).not.toBeInTheDocument();
+  });
+
+  test('add button works', () => {
+    const onAddItem = jest.fn();
+    const onStartEditMode = null;
+    const onSubmit = null;
+
+    render(
+      <InputListSection
+        header={header}
+        editMode={true}
+        onStartEditMode={onStartEditMode}
+        onSubmit={onSubmit}
+        editDisplay={editDisplay}
+        viewDisplay={viewDisplay}
+        onAddItem={onAddItem}
+      />
+    );
+    userEvent.click(screen.getByText('add'));
+    expect(onAddItem.mock.calls.length).toBe(1);
   });
 });

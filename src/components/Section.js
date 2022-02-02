@@ -44,4 +44,38 @@ class InputSection extends Component {
   }
 }
 
-export { Section, InputSection };
+class InputListSection extends Component {
+  render() {
+    const {
+      header,
+      editMode,
+      onStartEditMode,
+      onSubmit,
+      onAddItem,
+      editDisplay,
+      viewDisplay,
+    } = this.props;
+    return (
+      <Section header={header}>
+        {conditionalRender(
+          editMode,
+          <div className="input-section-display">
+            {editDisplay}
+            <div className="input-action-buttons">
+              <button onClick={onAddItem}>add</button>
+              <button onClick={onSubmit}>submit</button>
+            </div>
+          </div>,
+          <div className="input-section-display">
+            {viewDisplay}
+            <div className="input-action-buttons">
+              <button onClick={onStartEditMode}>edit</button>
+            </div>
+          </div>
+        )}
+      </Section>
+    );
+  }
+}
+
+export { Section, InputSection, InputListSection };

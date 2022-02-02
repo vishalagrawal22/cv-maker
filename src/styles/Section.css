@@ -4,3 +4,8 @@
   align-items: center;
   gap: 16px;
 }
+
+.input-action-buttons {
+  display: flex;
+  gap: 16px;
+}
