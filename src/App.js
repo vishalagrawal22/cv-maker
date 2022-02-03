@@ -1,10 +1,11 @@
 import { Component } from 'react';
 import { UserInfoFactory } from './components/UserInfo';
+import { ProjectFactory } from './components/Project';
 import {
-  InputProjectsSection,
-  ProjectFactory,
-  ProjectSection,
-} from './components/Project';
+  InputEducationSection,
+  EducationFactory,
+  EducationSection,
+} from './components/Education';
 import { deepCopy } from './utils/helper-functions';
 
 class App extends Component {
@@ -18,16 +19,28 @@ class App extends Component {
         editMode: true,
         projects: [],
       },
+      educations: [],
+      educationsFormValues: {
+        editMode: true,
+        educations: [],
+      },
     };
     this.handleUserInfoChange = this.handleUserInfoChange.bind(this);
     this.handleUserInfoSubmit = this.handleUserInfoSubmit.bind(this);
     this.handleUserInfoStartEditMode =
       this.handleUserInfoStartEditMode.bind(this);
+
     this.handleProjectStartEditMode =
       this.handleProjectStartEditMode.bind(this);
     this.handleProjectsSubmit = this.handleProjectsSubmit.bind(this);
     this.handleProjectChange = this.handleProjectChange.bind(this);
     this.handleProjectAdd = this.handleProjectAdd.bind(this);
+
+    this.handleEducationStartEditMode =
+      this.handleEducationStartEditMode.bind(this);
+    this.handleEducationSubmit = this.handleEducationSubmit.bind(this);
+    this.handleEducationAdd = this.handleEducationAdd.bind(this);
+    this.handleEducationChange = this.handleEducationChange.bind(this);
   }
 
   handleUserInfoStartEditMode() {
@@ -116,18 +129,76 @@ class App extends Component {
     });
   }
 
+  handleEducationStartEditMode() {
+    this.setState((prevState) => {
+      const educationsFormValues = deepCopy(prevState.educationsFormValues);
+      educationsFormValues.editMode = true;
+      return {
+        educationsFormValues,
+      };
+    });
+  }
+
+  handleEducationSubmit() {
+    this.setState((prevState) => {
+      const educationsFormValues = deepCopy(prevState.educationsFormValues);
+      educationsFormValues.editMode = false;
+
+      const educations = deepCopy(prevState.educationsFormValues).educations;
+      const index = educations.findIndex(
+        (education) => education.institute === '' || education.degree === ''
+      );
+      if (index === -1) {
+        return {
+          educations,
+          educationsFormValues,
+        };
+      } else {
+        return null;
+      }
+    });
+  }
+
+  handleEducationChange(event) {
+    const form = event.target.parentElement;
+    const id = form.getAttribute('id');
+    this.setState((prevState) => {
+      const educationsFormValues = deepCopy(prevState.educationsFormValues);
+      const educationIndex = educationsFormValues.educations.findIndex(
+        (education) => id === education.id
+      );
+      educationsFormValues.educations[educationIndex][event.target.name] =
+        event.target.value;
+      return {
+        educationsFormValues,
+      };
+    });
+  }
+
+  handleEducationAdd() {
+    this.setState((prevState) => {
+      const educationsFormValues = deepCopy(prevState.educationsFormValues);
+      educationsFormValues.educations.push(
+        EducationFactory('', '', '', '', '')
+      );
+      return {
+        educationsFormValues,
+      };
+    });
+  }
+
   render() {
     return (
       <div>
-        <InputProjectsSection
-          projects={this.state.projects}
-          projectsFormValues={this.state.projectsFormValues}
-          onStartEditMode={this.handleProjectStartEditMode}
-          onProjectsSubmit={this.handleProjectsSubmit}
-          onProjectChange={this.handleProjectChange}
-          onProjectAdd={this.handleProjectAdd}
+        <InputEducationSection
+          educations={this.state.educations}
+          educationsFormValues={this.state.educationsFormValues}
+          onStartEditMode={this.handleEducationStartEditMode}
+          onEducationSubmit={this.handleEducationSubmit}
+          onEducationChange={this.handleEducationChange}
+          onEducationAdd={this.handleEducationAdd}
         />
-        <ProjectSection projects={this.state.projects} />
+        <EducationSection educations={this.state.educations} />
       </div>
     );
   }
