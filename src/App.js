@@ -1,11 +1,12 @@
 import { Component } from 'react';
 import { UserInfoFactory } from './components/UserInfo';
 import { ProjectFactory } from './components/Project';
+import { EducationFactory } from './components/Education';
 import {
-  InputEducationSection,
-  EducationFactory,
-  EducationSection,
-} from './components/Education';
+  WorkExperienceFactory,
+  WorkExperienceSection,
+  InputWorkExperienceSection,
+} from './components/WorkExperience';
 import { deepCopy } from './utils/helper-functions';
 
 class App extends Component {
@@ -14,15 +15,23 @@ class App extends Component {
     this.state = {
       userInfo: UserInfoFactory('', '', ''),
       userInfoFormValues: { ...UserInfoFactory('', '', ''), editMode: true },
+
       projects: [],
       projectsFormValues: {
         editMode: true,
         projects: [],
       },
+
       educations: [],
       educationsFormValues: {
         editMode: true,
         educations: [],
+      },
+
+      workExperiences: [],
+      workExperienceFormValues: {
+        editMode: true,
+        workExperiences: [],
       },
     };
     this.handleUserInfoChange = this.handleUserInfoChange.bind(this);
@@ -41,6 +50,14 @@ class App extends Component {
     this.handleEducationSubmit = this.handleEducationSubmit.bind(this);
     this.handleEducationAdd = this.handleEducationAdd.bind(this);
     this.handleEducationChange = this.handleEducationChange.bind(this);
+
+    this.handleWorkExperienceEditMode =
+      this.handleWorkExperienceEditMode.bind(this);
+    this.handleWorkExperienceChange =
+      this.handleWorkExperienceChange.bind(this);
+    this.handleWorkExperienceSubmit =
+      this.handleWorkExperienceSubmit.bind(this);
+    this.handleWorkExperienceAdd = this.handleWorkExperienceAdd.bind(this);
   }
 
   handleUserInfoStartEditMode() {
@@ -187,18 +204,91 @@ class App extends Component {
     });
   }
 
+  handleWorkExperienceEditMode() {
+    this.setState((prevState) => {
+      const workExperienceFormValues = deepCopy(
+        prevState.workExperienceFormValues
+      );
+      workExperienceFormValues.editMode = true;
+      return {
+        workExperienceFormValues,
+      };
+    });
+  }
+
+  handleWorkExperienceSubmit() {
+    this.setState((prevState) => {
+      const workExperienceFormValues = deepCopy(
+        prevState.workExperienceFormValues
+      );
+      workExperienceFormValues.editMode = false;
+
+      const workExperiences = deepCopy(
+        prevState.workExperienceFormValues
+      ).workExperiences;
+      const index = workExperiences.findIndex(
+        (workExperience) =>
+          workExperience.company === '' || workExperience.position === ''
+      );
+
+      if (index === -1) {
+        return {
+          workExperiences,
+          workExperienceFormValues,
+        };
+      } else {
+        return null;
+      }
+    });
+  }
+
+  handleWorkExperienceChange(event) {
+    const form = event.target.parentElement;
+    const id = form.getAttribute('id');
+    this.setState((prevState) => {
+      const workExperienceFormValues = deepCopy(
+        prevState.workExperienceFormValues
+      );
+      const workExperienceIndex =
+        workExperienceFormValues.workExperiences.findIndex(
+          (workExperience) => id === workExperience.id
+        );
+
+      workExperienceFormValues.workExperiences[workExperienceIndex][
+        event.target.name
+      ] = event.target.value;
+      return {
+        workExperienceFormValues,
+      };
+    });
+  }
+
+  handleWorkExperienceAdd() {
+    this.setState((prevState) => {
+      const workExperienceFormValues = deepCopy(
+        prevState.workExperienceFormValues
+      );
+      workExperienceFormValues.workExperiences.push(
+        WorkExperienceFactory('', '', '', '', '')
+      );
+      return {
+        workExperienceFormValues,
+      };
+    });
+  }
+
   render() {
     return (
       <div>
-        <InputEducationSection
-          educations={this.state.educations}
-          educationsFormValues={this.state.educationsFormValues}
-          onStartEditMode={this.handleEducationStartEditMode}
-          onEducationSubmit={this.handleEducationSubmit}
-          onEducationChange={this.handleEducationChange}
-          onEducationAdd={this.handleEducationAdd}
+        <InputWorkExperienceSection
+          workExperiences={this.state.workExperiences}
+          workExperienceFormValues={this.state.workExperienceFormValues}
+          onStartEditMode={this.handleWorkExperienceEditMode}
+          onWorkExperienceSubmit={this.handleWorkExperienceSubmit}
+          onWorkExperienceChange={this.handleWorkExperienceChange}
+          onWorkExperienceAdd={this.handleWorkExperienceAdd}
         />
-        <EducationSection educations={this.state.educations} />
+        <WorkExperienceSection workExperiences={this.state.workExperiences} />
       </div>
     );
   }

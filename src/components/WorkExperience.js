@@ -1,7 +1,7 @@
 import '../styles/common.css';
 
 import { Component } from 'react';
-import { Section } from './Section';
+import { Section, InputListSection } from './Section';
 import { renderIfTrue, conditionalRender } from '../utils/helper-functions';
 import uniqid from 'uniqid';
 
@@ -29,11 +29,17 @@ class WorkExperienceItem extends Component {
         )}
         <div>
           <span>
-            {workExperience.start} -
-            {conditionalRender(
-              workExperience.end !== '',
-              <span> {workExperience.end}</span>,
-              <span> {'Present'}</span>
+            {renderIfTrue(
+              workExperience.start !== '',
+              conditionalRender(
+                workExperience.end !== '',
+                <span>
+                  {workExperience.start} - {workExperience.end}
+                </span>,
+                <span>
+                  {workExperience.start} - {'Present'}
+                </span>
+              )
             )}
           </span>
         </div>
@@ -60,4 +66,125 @@ class WorkExperienceSection extends Component {
   }
 }
 
-export { WorkExperienceFactory, WorkExperienceItem, WorkExperienceSection };
+function InputWorkExperienceItemForm(workExperience, onWorkExperienceChange) {
+  return (
+    <li key={workExperience.id}>
+      <form id={workExperience.id}>
+        <label htmlFor="company">Company:</label>
+        <input
+          id="company"
+          name="company"
+          value={workExperience.company}
+          onChange={onWorkExperienceChange}
+          type="text"
+          required
+        />
+        <label htmlFor="position">Position:</label>
+        <input
+          id="position"
+          name="position"
+          value={workExperience.position}
+          onChange={onWorkExperienceChange}
+          type="text"
+          required
+        />
+        <label htmlFor="description">Description:</label>
+        <input
+          id="description"
+          name="description"
+          value={workExperience.description}
+          onChange={onWorkExperienceChange}
+          type="text"
+        />
+        <label htmlFor="work-experience-start">Start:</label>
+        <input
+          id="work-experience-start"
+          name="start"
+          value={workExperience.start}
+          onChange={onWorkExperienceChange}
+          type="text"
+        />
+        <label htmlFor="work-experience-end">End:</label>
+        <input
+          id="work-experience-end"
+          name="end"
+          value={workExperience.end}
+          onChange={onWorkExperienceChange}
+          type="text"
+        />
+      </form>
+    </li>
+  );
+}
+
+function InputWorkExperienceSectionForm(
+  workExperienceFormValues,
+  onWorkExperienceChange
+) {
+  return (
+    <ul>
+      {workExperienceFormValues.workExperiences.map((workExperience) => {
+        return InputWorkExperienceItemForm(
+          workExperience,
+          onWorkExperienceChange
+        );
+      })}
+    </ul>
+  );
+}
+
+function InputWorkExperienceItemDisplay(workExperience) {
+  return (
+    <li key={workExperience.id}>
+      <div>Company:{workExperience.company}</div>
+      <div>Position:{workExperience.position}</div>
+      <div>Description:{workExperience.description}</div>
+      <div>Start:{workExperience.start}</div>
+      <div>End:{workExperience.end}</div>
+    </li>
+  );
+}
+
+function InputWorkExperienceSectionDisplay(workExperiences) {
+  return (
+    <ul>
+      {workExperiences.map((workExperience) => {
+        return InputWorkExperienceItemDisplay(workExperience);
+      })}
+    </ul>
+  );
+}
+
+class InputWorkExperienceSection extends Component {
+  render() {
+    const {
+      workExperiences,
+      workExperienceFormValues,
+      onStartEditMode,
+      onWorkExperienceSubmit,
+      onWorkExperienceChange,
+      onWorkExperienceAdd,
+    } = this.props;
+    return (
+      <InputListSection
+        header="Enter your work experience data"
+        editMode={workExperienceFormValues.editMode}
+        onStartEditMode={onStartEditMode}
+        onSubmit={onWorkExperienceSubmit}
+        onAddItem={onWorkExperienceAdd}
+        editDisplay={InputWorkExperienceSectionForm(
+          workExperienceFormValues,
+          onWorkExperienceChange
+        )}
+        viewDisplay={InputWorkExperienceSectionDisplay(workExperiences)}
+      />
+    );
+  }
+}
+
+export {
+  WorkExperienceFactory,
+  WorkExperienceItem,
+  WorkExperienceSection,
+  InputWorkExperienceSection,
+};
