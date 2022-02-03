@@ -12,7 +12,7 @@ describe('Project Factory tests', () => {
       'Todo List',
       'https://example.com/elit/todo-list',
       'https://elit.example.io/todo-list',
-      ['HTML', 'SCSS', 'Javascript(Jquery)'],
+      'HTML,SCSS,Javascript(Jquery)',
       'A simple todo-list with jquery'
     );
 
@@ -22,9 +22,7 @@ describe('Project Factory tests', () => {
 
     expect(project.hostingUrl).toBe('https://elit.example.io/todo-list');
 
-    expect(project.techStack).toEqual(
-      expect.arrayContaining(['HTML', 'SCSS', 'Javascript(Jquery)'])
-    );
+    expect(project.techStack).toBe('HTML,SCSS,Javascript(Jquery)');
 
     expect(project.description).toBe('A simple todo-list with jquery');
 
@@ -38,7 +36,7 @@ describe('ProjectItem component test', () => {
       'Todo List',
       'https://example.com/elit/todo-list',
       'https://elit.example.io/todo-list',
-      ['HTML', 'SCSS', 'Javascript(Jquery)'],
+      'HTML,SCSS,Javascript(Jquery)',
       'A simple todo-list with jquery'
     );
     render(<ProjectItem project={project} />);
@@ -58,7 +56,7 @@ describe('ProjectItem component test', () => {
   });
 
   test('If not provided info should not be in dom', () => {
-    const project = ProjectFactory('', '', '', [], '');
+    const project = ProjectFactory('', '', '', '', '');
     render(<ProjectItem project={project} />);
 
     const projectCodeUrl = screen.queryByText(/view code/i);
@@ -82,21 +80,21 @@ describe('ProjectSection component test', () => {
         'Todo List',
         'https://example.com/elit/todo-list',
         'https://elit.example.io/todo-list',
-        ['HTML', 'SCSS', 'Javascript(Jquery)'],
+        'HTML,SCSS,Javascript(Jquery)',
         'A simple todo-list with jquery'
       ),
       ProjectFactory(
         'COVID Tracker App',
         'https://example.com/elit/covid-tracker',
         '',
-        ['JavaScript(Jquery)', 'Covid API'],
+        'JavaScript(Jquery),Covid API',
         'A simple website which shows covid stats of the world, user’s location or any specific state of any country.'
       ),
       ProjectFactory(
         'Movie Database',
         'https://example.com/elit/movie-database',
         '',
-        ['MongoDB', 'Express', 'React', 'NodeJS'],
+        'MongoDB,Express,React,NodeJS',
         ''
       ),
     ];
