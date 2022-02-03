@@ -5,6 +5,7 @@ import { UserInfoSection } from './UserInfo';
 import { EducationSection } from './Education';
 import { WorkExperienceSection } from './WorkExperience';
 import { ProjectSection } from './Project';
+import { renderIfTrue } from '../utils/helper-functions';
 
 class Resume extends Component {
   render() {
@@ -12,9 +13,18 @@ class Resume extends Component {
     return (
       <div>
         <UserInfoSection userInfo={userInfo} />
-        <EducationSection educations={educations} />
-        <WorkExperienceSection workExperiences={workExperiences} />
-        <ProjectSection projects={projects} />
+        {renderIfTrue(
+          educations.length !== 0,
+          <EducationSection educations={educations} />
+        )}
+        {renderIfTrue(
+          workExperiences.length !== 0,
+          <WorkExperienceSection workExperiences={workExperiences} />
+        )}
+        {renderIfTrue(
+          projects.length !== 0,
+          <ProjectSection projects={projects} />
+        )}
       </div>
     );
   }

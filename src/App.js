@@ -1,12 +1,15 @@
 import { Component } from 'react';
-import { UserInfoFactory } from './components/UserInfo';
-import { ProjectFactory } from './components/Project';
-import { EducationFactory } from './components/Education';
+import { UserInfoFactory, InputUserInfoSection } from './components/UserInfo';
+import { ProjectFactory, InputProjectsSection } from './components/Project';
+import {
+  EducationFactory,
+  InputEducationSection,
+} from './components/Education';
 import {
   WorkExperienceFactory,
-  WorkExperienceSection,
   InputWorkExperienceSection,
 } from './components/WorkExperience';
+import { Resume } from './components/Resume';
 import { deepCopy } from './utils/helper-functions';
 
 class App extends Component {
@@ -280,6 +283,21 @@ class App extends Component {
   render() {
     return (
       <div>
+        <InputUserInfoSection
+          userInfo={this.state.userInfo}
+          userInfoFormValues={this.state.userInfoFormValues}
+          onStartEditMode={this.handleUserInfoStartEditMode}
+          onUserInfoSubmit={this.handleUserInfoSubmit}
+          onUserInfoChange={this.handleUserInfoChange}
+        />
+        <InputEducationSection
+          educations={this.state.educations}
+          educationsFormValues={this.state.educationsFormValues}
+          onStartEditMode={this.handleEducationStartEditMode}
+          onEducationSubmit={this.handleEducationSubmit}
+          onEducationChange={this.handleEducationChange}
+          onEducationAdd={this.handleEducationAdd}
+        />
         <InputWorkExperienceSection
           workExperiences={this.state.workExperiences}
           workExperienceFormValues={this.state.workExperienceFormValues}
@@ -288,7 +306,20 @@ class App extends Component {
           onWorkExperienceChange={this.handleWorkExperienceChange}
           onWorkExperienceAdd={this.handleWorkExperienceAdd}
         />
-        <WorkExperienceSection workExperiences={this.state.workExperiences} />
+        <InputProjectsSection
+          projects={this.state.projects}
+          projectsFormValues={this.state.projectsFormValues}
+          onStartEditMode={this.handleProjectStartEditMode}
+          onProjectsSubmit={this.handleProjectsSubmit}
+          onProjectChange={this.handleProjectChange}
+          onProjectAdd={this.handleProjectAdd}
+        />
+        <Resume
+          projects={this.state.projects}
+          educations={this.state.educations}
+          workExperiences={this.state.workExperiences}
+          userInfo={this.state.userInfo}
+        />
       </div>
     );
   }

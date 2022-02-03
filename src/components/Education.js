@@ -128,11 +128,11 @@ function InputEducationSectionForm(educationsFormValues, onEducationChange) {
 function InputEducationItemDisplay(education) {
   return (
     <li key={education.id}>
-      <div>Institute:{education.institute}</div>
-      <div>Degree:{education.degree}</div>
-      <div>Marks:{education.marks}</div>
-      <div>Start:{education.start}</div>
-      <div>End:{education.end}</div>
+      <div>Institute: {education.institute}</div>
+      <div>Degree: {education.degree}</div>
+      <div>Marks: {education.marks}</div>
+      <div>Start: {education.start}</div>
+      <div>End: {education.end}</div>
     </li>
   );
 }

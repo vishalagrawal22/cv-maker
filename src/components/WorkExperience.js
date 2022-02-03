@@ -136,11 +136,11 @@ function InputWorkExperienceSectionForm(
 function InputWorkExperienceItemDisplay(workExperience) {
   return (
     <li key={workExperience.id}>
-      <div>Company:{workExperience.company}</div>
-      <div>Position:{workExperience.position}</div>
-      <div>Description:{workExperience.description}</div>
-      <div>Start:{workExperience.start}</div>
-      <div>End:{workExperience.end}</div>
+      <div>Company: {workExperience.company}</div>
+      <div>Position: {workExperience.position}</div>
+      <div>Description: {workExperience.description}</div>
+      <div>Start: {workExperience.start}</div>
+      <div>End: {workExperience.end}</div>
     </li>
   );
 }

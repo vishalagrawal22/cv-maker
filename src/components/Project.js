@@ -1,6 +1,7 @@
 import uniqid from 'uniqid';
 
 import '../styles/common.css';
+import '../styles/Project.css';
 
 import { Component } from 'react';
 import { renderIfTrue } from '../utils/helper-functions';
