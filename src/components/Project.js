@@ -8,11 +8,11 @@ import { renderIfTrue } from '../utils/helper-functions';
 import { InputListSection, Section } from './Section';
 
 function ProjectFactory(
-  name,
-  codeUrl,
-  hostingUrl,
-  techStack,
-  description,
+  name = '',
+  codeUrl = '',
+  hostingUrl = '',
+  techStack = '',
+  description = '',
   id = uniqid('Project-')
 ) {
   return { id, name, codeUrl, hostingUrl, techStack, description };
@@ -76,7 +76,7 @@ class ProjectSection extends Component {
   }
 }
 
-function InputProjectItemForm(project, onProjectChange) {
+function InputProjectItemForm(project, onChange, onDelete) {
   return (
     <li key={project.id}>
       <form id={project.id}>
@@ -85,7 +85,7 @@ function InputProjectItemForm(project, onProjectChange) {
           id="project-name"
           name="name"
           value={project.name}
-          onChange={onProjectChange}
+          onChange={onChange}
           type="text"
           required
         />
@@ -94,7 +94,7 @@ function InputProjectItemForm(project, onProjectChange) {
           id="code-url"
           name="codeUrl"
           value={project.codeUrl}
-          onChange={onProjectChange}
+          onChange={onChange}
           type="text"
         />
         <label htmlFor="hosting-url">Hosting Url:</label>
@@ -102,7 +102,7 @@ function InputProjectItemForm(project, onProjectChange) {
           id="hosting-url"
           name="hostingUrl"
           value={project.hostingUrl}
-          onChange={onProjectChange}
+          onChange={onChange}
           type="text"
         />
         <label htmlFor="tech-stack">
@@ -112,7 +112,7 @@ function InputProjectItemForm(project, onProjectChange) {
           id="tech-stack"
           name="techStack"
           value={project.techStack}
-          onChange={onProjectChange}
+          onChange={onChange}
           type="text"
         />
         <label htmlFor="description">Description:</label>
@@ -120,19 +120,20 @@ function InputProjectItemForm(project, onProjectChange) {
           id="description"
           name="description"
           value={project.description}
-          onChange={onProjectChange}
+          onChange={onChange}
           type="text"
         />
+        <button onClick={onDelete}>delete</button>
       </form>
     </li>
   );
 }
 
-function InputProjectsSectionForm(projectsFormValues, onProjectChange) {
+function InputProjectsSectionForm(projects, onChange, onDelete) {
   return (
     <ul>
-      {projectsFormValues.projects.map((project) => {
-        return InputProjectItemForm(project, onProjectChange);
+      {projects.map((project) => {
+        return InputProjectItemForm(project, onChange, onDelete);
       })}
     </ul>
   );
@@ -164,23 +165,23 @@ class InputProjectsSection extends Component {
   render() {
     const {
       projects,
-      projectsFormValues,
+      editMode,
+      formList,
+      onAdd,
+      onDelete,
+      onChange,
       onStartEditMode,
-      onProjectsSubmit,
-      onProjectChange,
-      onProjectAdd,
+      onSubmit,
     } = this.props;
     return (
       <InputListSection
         header="Enter your projects data"
-        editMode={projectsFormValues.editMode}
+        editMode={editMode}
         onStartEditMode={onStartEditMode}
-        onSubmit={onProjectsSubmit}
-        onAddItem={onProjectAdd}
-        editDisplay={InputProjectsSectionForm(
-          projectsFormValues,
-          onProjectChange
-        )}
+        onSubmit={onSubmit}
+        onAdd={onAdd}
+        onDelete={onDelete}
+        editDisplay={InputProjectsSectionForm(formList, onChange, onDelete)}
         viewDisplay={InputProjectsSectionDisplay(projects)}
       />
     );

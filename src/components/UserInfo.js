@@ -3,7 +3,7 @@ import '../styles/common.css';
 import { Component } from 'react';
 import { Section, InputSection } from './Section';
 
-function UserInfoFactory(name, email, phone) {
+function UserInfoFactory(name = '', email = '', phone = '') {
   return { name, email, phone };
 }
 
@@ -20,31 +20,34 @@ class UserInfoSection extends Component {
   }
 }
 
-function InputUserInfoSectionForm(userInfoFormValues, onUserInfoChange) {
+function InputUserInfoSectionForm(userInfo, onUserInfoChange) {
   return (
     <div>
       <form>
-        <label htmlFor="name">Name:</label>
+        <label htmlFor="user-name">Name:</label>
         <input
-          id="name"
+          id="user-name"
+          name="name"
           type="text"
-          value={userInfoFormValues.name}
+          value={userInfo.name}
           onChange={onUserInfoChange}
           required
         />
         <label htmlFor="email">Email:</label>
         <input
           id="email"
+          name="email"
           type="email"
-          value={userInfoFormValues.email}
+          value={userInfo.email}
           onChange={onUserInfoChange}
           required
         />
         <label htmlFor="phone">Phone:</label>
         <input
           id="phone"
+          name="phone"
           type="text"
-          value={userInfoFormValues.phone}
+          value={userInfo.phone}
           onChange={onUserInfoChange}
           required
         />
@@ -67,24 +70,20 @@ class InputUserInfoSection extends Component {
   render() {
     const {
       userInfo,
+      editMode,
+      formInfo,
+      onChange,
       onStartEditMode,
-      userInfoFormValues,
-      onUserInfoSubmit,
-      onUserInfoChange,
+      onSubmit,
     } = this.props;
-    const editDisplay = InputUserInfoSectionForm(
-      userInfoFormValues,
-      onUserInfoChange
-    );
-    const viewDisplay = InputUserInfoSectionDisplay(userInfo);
     return (
       <InputSection
         header="Enter your general info"
         onStartEditMode={onStartEditMode}
-        onSubmit={onUserInfoSubmit}
-        editMode={userInfoFormValues.editMode}
-        editDisplay={editDisplay}
-        viewDisplay={viewDisplay}
+        onSubmit={onSubmit}
+        editMode={editMode}
+        editDisplay={InputUserInfoSectionForm(formInfo, onChange)}
+        viewDisplay={InputUserInfoSectionDisplay(userInfo)}
       />
     );
   }

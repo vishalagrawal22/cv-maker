@@ -7,11 +7,11 @@ import { Section, InputListSection } from './Section';
 import { renderIfTrue, conditionalRender } from '../utils/helper-functions';
 
 function EducationFactory(
-  institute,
-  degree,
-  marks,
-  start,
-  end,
+  institute = '',
+  degree = '',
+  marks = '',
+  start = '',
+  end = '',
   id = uniqid('Education-')
 ) {
   return { institute, degree, marks, start, end, id };
@@ -65,7 +65,7 @@ class EducationSection extends Component {
   }
 }
 
-function InputEducationItemForm(education, onEducationChange) {
+function InputEducationItemForm(education, onChange, onDelete) {
   return (
     <li key={education.id}>
       <form id={education.id}>
@@ -74,7 +74,7 @@ function InputEducationItemForm(education, onEducationChange) {
           id="institute"
           name="institute"
           value={education.institute}
-          onChange={onEducationChange}
+          onChange={onChange}
           type="text"
           required
         />
@@ -83,7 +83,7 @@ function InputEducationItemForm(education, onEducationChange) {
           id="degree"
           name="degree"
           value={education.degree}
-          onChange={onEducationChange}
+          onChange={onChange}
           type="text"
         />
         <label htmlFor="marks">Marks:</label>
@@ -91,7 +91,7 @@ function InputEducationItemForm(education, onEducationChange) {
           id="marks"
           name="marks"
           value={education.marks}
-          onChange={onEducationChange}
+          onChange={onChange}
           type="text"
         />
         <label htmlFor="education-start">Start:</label>
@@ -99,7 +99,7 @@ function InputEducationItemForm(education, onEducationChange) {
           id="education-start"
           name="start"
           value={education.start}
-          onChange={onEducationChange}
+          onChange={onChange}
           type="text"
         />
         <label htmlFor="education-end">End:</label>
@@ -107,19 +107,20 @@ function InputEducationItemForm(education, onEducationChange) {
           id="education-end"
           name="end"
           value={education.end}
-          onChange={onEducationChange}
+          onChange={onChange}
           type="text"
         />
+        <button onClick={onDelete}>delete</button>
       </form>
     </li>
   );
 }
 
-function InputEducationSectionForm(educationsFormValues, onEducationChange) {
+function InputEducationSectionForm(educations, onChange, onDelete) {
   return (
     <ul>
-      {educationsFormValues.educations.map((education) => {
-        return InputEducationItemForm(education, onEducationChange);
+      {educations.map((education) => {
+        return InputEducationItemForm(education, onChange, onDelete);
       })}
     </ul>
   );
@@ -151,23 +152,22 @@ class InputEducationSection extends Component {
   render() {
     const {
       educations,
-      educationsFormValues,
+      editMode,
+      formList,
+      onAdd,
+      onDelete,
+      onChange,
       onStartEditMode,
-      onEducationSubmit,
-      onEducationChange,
-      onEducationAdd,
+      onSubmit,
     } = this.props;
     return (
       <InputListSection
         header="Enter your education data"
-        editMode={educationsFormValues.editMode}
+        editMode={editMode}
         onStartEditMode={onStartEditMode}
-        onSubmit={onEducationSubmit}
-        onAddItem={onEducationAdd}
-        editDisplay={InputEducationSectionForm(
-          educationsFormValues,
-          onEducationChange
-        )}
+        onSubmit={onSubmit}
+        onAdd={onAdd}
+        editDisplay={InputEducationSectionForm(formList, onChange, onDelete)}
         viewDisplay={InputEducationSectionDisplay(educations)}
       />
     );

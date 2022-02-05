@@ -9,3 +9,17 @@
   display: flex;
   gap: 16px;
 }
+
+form button {
+  margin: auto;
+  margin-top: 10px;
+  margin-bottom: 0px;
+}
+
+input {
+  width: 100%;
+}
+
+ul {
+  padding-right: 40px;
+}

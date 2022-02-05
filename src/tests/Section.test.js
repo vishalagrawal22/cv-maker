@@ -208,7 +208,7 @@ describe('InputListSection component tests', () => {
   });
 
   test('add button works', () => {
-    const onAddItem = jest.fn();
+    const onAdd = jest.fn();
     const onStartEditMode = null;
     const onSubmit = null;
 
@@ -220,10 +220,10 @@ describe('InputListSection component tests', () => {
         onSubmit={onSubmit}
         editDisplay={editDisplay}
         viewDisplay={viewDisplay}
-        onAddItem={onAddItem}
+        onAdd={onAdd}
       />
     );
     userEvent.click(screen.getByText('add'));
-    expect(onAddItem.mock.calls.length).toBe(1);
+    expect(onAdd.mock.calls.length).toBe(1);
   });
 });

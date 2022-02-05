@@ -1,328 +1,139 @@
-import { Component } from 'react';
-import { UserInfoFactory, InputUserInfoSection } from './components/UserInfo';
-import { ProjectFactory, InputProjectsSection } from './components/Project';
+import { useState } from 'react';
 import {
   EducationFactory,
   InputEducationSection,
 } from './components/Education';
+import { ProjectFactory, InputProjectsSection } from './components/Project';
+import { InputUserInfoSection, UserInfoFactory } from './components/UserInfo';
 import {
-  WorkExperienceFactory,
   InputWorkExperienceSection,
+  WorkExperienceFactory,
 } from './components/WorkExperience';
 import { Resume } from './components/Resume';
 import { deepCopy } from './utils/helper-functions';
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      userInfo: UserInfoFactory('', '', ''),
-      userInfoFormValues: { ...UserInfoFactory('', '', ''), editMode: true },
+function useFormList(setMainList, factory) {
+  const [editMode, setEditMode] = useState(true);
+  const [formList, setFormList] = useState([]);
 
-      projects: [],
-      projectsFormValues: {
-        editMode: true,
-        projects: [],
-      },
-
-      educations: [],
-      educationsFormValues: {
-        editMode: true,
-        educations: [],
-      },
-
-      workExperiences: [],
-      workExperienceFormValues: {
-        editMode: true,
-        workExperiences: [],
-      },
-    };
-    this.handleUserInfoChange = this.handleUserInfoChange.bind(this);
-    this.handleUserInfoSubmit = this.handleUserInfoSubmit.bind(this);
-    this.handleUserInfoStartEditMode =
-      this.handleUserInfoStartEditMode.bind(this);
-
-    this.handleProjectStartEditMode =
-      this.handleProjectStartEditMode.bind(this);
-    this.handleProjectsSubmit = this.handleProjectsSubmit.bind(this);
-    this.handleProjectChange = this.handleProjectChange.bind(this);
-    this.handleProjectAdd = this.handleProjectAdd.bind(this);
-
-    this.handleEducationStartEditMode =
-      this.handleEducationStartEditMode.bind(this);
-    this.handleEducationSubmit = this.handleEducationSubmit.bind(this);
-    this.handleEducationAdd = this.handleEducationAdd.bind(this);
-    this.handleEducationChange = this.handleEducationChange.bind(this);
-
-    this.handleWorkExperienceEditMode =
-      this.handleWorkExperienceEditMode.bind(this);
-    this.handleWorkExperienceChange =
-      this.handleWorkExperienceChange.bind(this);
-    this.handleWorkExperienceSubmit =
-      this.handleWorkExperienceSubmit.bind(this);
-    this.handleWorkExperienceAdd = this.handleWorkExperienceAdd.bind(this);
+  function onAdd() {
+    setFormList([...formList, factory()]);
   }
 
-  handleUserInfoStartEditMode() {
-    this.setState((prevState) => {
-      const userInfoFormValues = deepCopy(prevState.userInfo);
-      userInfoFormValues.editMode = true;
-      return {
-        userInfoFormValues,
-      };
+  function onDelete(event) {
+    event.preventDefault();
+
+    const id = event.target.parentNode.id;
+    const newFormList = formList.filter((item) => {
+      return item.id !== id;
     });
+    setFormList(newFormList);
   }
 
-  handleUserInfoChange(event) {
-    this.setState((prevState) => {
-      const userInfoFormValues = deepCopy(prevState.userInfoFormValues);
-      userInfoFormValues[event.target.id] = event.target.value;
-      return {
-        userInfoFormValues,
-      };
+  function onChange(event) {
+    const id = event.target.parentNode.id;
+    const index = formList.findIndex((item) => {
+      return item.id === id;
     });
+    const newFormList = deepCopy(formList);
+    newFormList[index][event.target.name] = event.target.value;
+    setFormList(newFormList);
   }
 
-  handleUserInfoSubmit() {
-    this.setState((prevState) => {
-      const userInfoFormValues = deepCopy(prevState.userInfoFormValues);
-      delete userInfoFormValues.editMode;
-      return {
-        userInfo: userInfoFormValues,
-        userInfoFormValues: { ...UserInfoFactory('', '', ''), editMode: false },
-      };
-    });
+  function onStartEditMode() {
+    setEditMode(true);
   }
 
-  handleProjectStartEditMode() {
-    this.setState((prevState) => {
-      const projectsFormValues = deepCopy(prevState.projectsFormValues);
-      projectsFormValues.editMode = true;
-      return {
-        projectsFormValues,
-      };
-    });
+  function onEndEditMode() {
+    setEditMode(false);
   }
 
-  handleProjectsSubmit() {
-    this.setState((prevState) => {
-      const projectsFormValues = deepCopy(prevState.projectsFormValues);
-      projectsFormValues.editMode = false;
-
-      const projects = deepCopy(prevState.projectsFormValues).projects;
-      const index = projects.findIndex((project) => project.name === '');
-      if (index === -1) {
-        return {
-          projects,
-          projectsFormValues,
-        };
-      } else {
-        return null;
-      }
-    });
+  function onSubmit(event) {
+    event.preventDefault();
+    onEndEditMode();
+    setMainList(formList);
   }
 
-  handleProjectChange(event) {
-    const form = event.target.parentElement;
-    const id = form.getAttribute('id');
-    console.log(id);
-    this.setState((prevState) => {
-      const projectsFormValues = deepCopy(prevState.projectsFormValues);
-      const projectIndex = projectsFormValues.projects.findIndex(
-        (project) => id === project.id
-      );
-      projectsFormValues.projects[projectIndex][event.target.name] =
-        event.target.value;
-      return {
-        projectsFormValues,
-      };
-    });
+  return {
+    editMode,
+    formList,
+    onAdd,
+    onDelete,
+    onChange,
+    onStartEditMode,
+    onSubmit,
+  };
+}
+
+function useFormInfo(setMainInfo, initialValue) {
+  const [editMode, setEditMode] = useState(true);
+  const [formInfo, setFormInfo] = useState(initialValue);
+
+  function onChange(event) {
+    const newFormInfo = deepCopy(formInfo);
+    newFormInfo[event.target.name] = event.target.value;
+    setFormInfo(newFormInfo);
   }
 
-  handleProjectAdd() {
-    this.setState((prevState) => {
-      const projectsFormValues = deepCopy(prevState.projectsFormValues);
-      projectsFormValues.projects.push(ProjectFactory('', '', '', '', ''));
-      return {
-        projectsFormValues,
-      };
-    });
+  function onStartEditMode() {
+    setEditMode(true);
   }
 
-  handleEducationStartEditMode() {
-    this.setState((prevState) => {
-      const educationsFormValues = deepCopy(prevState.educationsFormValues);
-      educationsFormValues.editMode = true;
-      return {
-        educationsFormValues,
-      };
-    });
+  function onEndEditMode() {
+    setEditMode(false);
   }
 
-  handleEducationSubmit() {
-    this.setState((prevState) => {
-      const educationsFormValues = deepCopy(prevState.educationsFormValues);
-      educationsFormValues.editMode = false;
-
-      const educations = deepCopy(prevState.educationsFormValues).educations;
-      const index = educations.findIndex(
-        (education) => education.institute === '' || education.degree === ''
-      );
-      if (index === -1) {
-        return {
-          educations,
-          educationsFormValues,
-        };
-      } else {
-        return null;
-      }
-    });
+  function onSubmit(event) {
+    event.preventDefault();
+    onEndEditMode();
+    setMainInfo(formInfo);
   }
 
-  handleEducationChange(event) {
-    const form = event.target.parentElement;
-    const id = form.getAttribute('id');
-    this.setState((prevState) => {
-      const educationsFormValues = deepCopy(prevState.educationsFormValues);
-      const educationIndex = educationsFormValues.educations.findIndex(
-        (education) => id === education.id
-      );
-      educationsFormValues.educations[educationIndex][event.target.name] =
-        event.target.value;
-      return {
-        educationsFormValues,
-      };
-    });
-  }
+  return {
+    editMode,
+    formInfo,
+    onChange,
+    onStartEditMode,
+    onSubmit,
+  };
+}
 
-  handleEducationAdd() {
-    this.setState((prevState) => {
-      const educationsFormValues = deepCopy(prevState.educationsFormValues);
-      educationsFormValues.educations.push(
-        EducationFactory('', '', '', '', '')
-      );
-      return {
-        educationsFormValues,
-      };
-    });
-  }
-
-  handleWorkExperienceEditMode() {
-    this.setState((prevState) => {
-      const workExperienceFormValues = deepCopy(
-        prevState.workExperienceFormValues
-      );
-      workExperienceFormValues.editMode = true;
-      return {
-        workExperienceFormValues,
-      };
-    });
-  }
-
-  handleWorkExperienceSubmit() {
-    this.setState((prevState) => {
-      const workExperienceFormValues = deepCopy(
-        prevState.workExperienceFormValues
-      );
-      workExperienceFormValues.editMode = false;
-
-      const workExperiences = deepCopy(
-        prevState.workExperienceFormValues
-      ).workExperiences;
-      const index = workExperiences.findIndex(
-        (workExperience) =>
-          workExperience.company === '' || workExperience.position === ''
-      );
-
-      if (index === -1) {
-        return {
-          workExperiences,
-          workExperienceFormValues,
-        };
-      } else {
-        return null;
-      }
-    });
-  }
-
-  handleWorkExperienceChange(event) {
-    const form = event.target.parentElement;
-    const id = form.getAttribute('id');
-    this.setState((prevState) => {
-      const workExperienceFormValues = deepCopy(
-        prevState.workExperienceFormValues
-      );
-      const workExperienceIndex =
-        workExperienceFormValues.workExperiences.findIndex(
-          (workExperience) => id === workExperience.id
-        );
-
-      workExperienceFormValues.workExperiences[workExperienceIndex][
-        event.target.name
-      ] = event.target.value;
-      return {
-        workExperienceFormValues,
-      };
-    });
-  }
-
-  handleWorkExperienceAdd() {
-    this.setState((prevState) => {
-      const workExperienceFormValues = deepCopy(
-        prevState.workExperienceFormValues
-      );
-      workExperienceFormValues.workExperiences.push(
-        WorkExperienceFactory('', '', '', '', '')
-      );
-      return {
-        workExperienceFormValues,
-      };
-    });
-  }
-
-  render() {
-    return (
+function App() {
+  const [projects, setProjects] = useState([]);
+  const projectsFormData = useFormList(setProjects, ProjectFactory);
+  const [educations, setEducations] = useState([]);
+  const educationsFormData = useFormList(setEducations, EducationFactory);
+  const [workExperiences, setWorkExperiences] = useState([]);
+  const workExperiencesFormData = useFormList(
+    setWorkExperiences,
+    WorkExperienceFactory
+  );
+  const initialValue = UserInfoFactory();
+  const [userInfo, setUserInfo] = useState(initialValue);
+  const userInfoFormData = useFormInfo(setUserInfo, initialValue);
+  return (
+    <>
       <div>
-        <InputUserInfoSection
-          userInfo={this.state.userInfo}
-          userInfoFormValues={this.state.userInfoFormValues}
-          onStartEditMode={this.handleUserInfoStartEditMode}
-          onUserInfoSubmit={this.handleUserInfoSubmit}
-          onUserInfoChange={this.handleUserInfoChange}
-        />
+        <InputUserInfoSection userInfo={userInfo} {...userInfoFormData} />
         <InputEducationSection
-          educations={this.state.educations}
-          educationsFormValues={this.state.educationsFormValues}
-          onStartEditMode={this.handleEducationStartEditMode}
-          onEducationSubmit={this.handleEducationSubmit}
-          onEducationChange={this.handleEducationChange}
-          onEducationAdd={this.handleEducationAdd}
+          educations={educations}
+          {...educationsFormData}
         />
         <InputWorkExperienceSection
-          workExperiences={this.state.workExperiences}
-          workExperienceFormValues={this.state.workExperienceFormValues}
-          onStartEditMode={this.handleWorkExperienceEditMode}
-          onWorkExperienceSubmit={this.handleWorkExperienceSubmit}
-          onWorkExperienceChange={this.handleWorkExperienceChange}
-          onWorkExperienceAdd={this.handleWorkExperienceAdd}
+          workExperiences={workExperiences}
+          {...workExperiencesFormData}
         />
-        <InputProjectsSection
-          projects={this.state.projects}
-          projectsFormValues={this.state.projectsFormValues}
-          onStartEditMode={this.handleProjectStartEditMode}
-          onProjectsSubmit={this.handleProjectsSubmit}
-          onProjectChange={this.handleProjectChange}
-          onProjectAdd={this.handleProjectAdd}
-        />
-        <Resume
-          projects={this.state.projects}
-          educations={this.state.educations}
-          workExperiences={this.state.workExperiences}
-          userInfo={this.state.userInfo}
-        />
+        <InputProjectsSection projects={projects} {...projectsFormData} />
       </div>
-    );
-  }
+      <Resume
+        userInfo={userInfo}
+        educations={educations}
+        workExperiences={workExperiences}
+        projects={projects}
+        {...projectsFormData}
+      />
+    </>
+  );
 }
 
 export default App;

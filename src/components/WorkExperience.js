@@ -6,11 +6,11 @@ import { renderIfTrue, conditionalRender } from '../utils/helper-functions';
 import uniqid from 'uniqid';
 
 function WorkExperienceFactory(
-  company,
-  position,
-  description,
-  start,
-  end,
+  company = '',
+  position = '',
+  description = '',
+  start = '',
+  end = '',
   id = uniqid('WorkExperience-')
 ) {
   return { company, position, description, start, end, id };
@@ -66,7 +66,7 @@ class WorkExperienceSection extends Component {
   }
 }
 
-function InputWorkExperienceItemForm(workExperience, onWorkExperienceChange) {
+function InputWorkExperienceItemForm(workExperience, onChange, onDelete) {
   return (
     <li key={workExperience.id}>
       <form id={workExperience.id}>
@@ -75,7 +75,7 @@ function InputWorkExperienceItemForm(workExperience, onWorkExperienceChange) {
           id="company"
           name="company"
           value={workExperience.company}
-          onChange={onWorkExperienceChange}
+          onChange={onChange}
           type="text"
           required
         />
@@ -84,7 +84,7 @@ function InputWorkExperienceItemForm(workExperience, onWorkExperienceChange) {
           id="position"
           name="position"
           value={workExperience.position}
-          onChange={onWorkExperienceChange}
+          onChange={onChange}
           type="text"
           required
         />
@@ -93,7 +93,7 @@ function InputWorkExperienceItemForm(workExperience, onWorkExperienceChange) {
           id="description"
           name="description"
           value={workExperience.description}
-          onChange={onWorkExperienceChange}
+          onChange={onChange}
           type="text"
         />
         <label htmlFor="work-experience-start">Start:</label>
@@ -101,7 +101,7 @@ function InputWorkExperienceItemForm(workExperience, onWorkExperienceChange) {
           id="work-experience-start"
           name="start"
           value={workExperience.start}
-          onChange={onWorkExperienceChange}
+          onChange={onChange}
           type="text"
         />
         <label htmlFor="work-experience-end">End:</label>
@@ -109,25 +109,20 @@ function InputWorkExperienceItemForm(workExperience, onWorkExperienceChange) {
           id="work-experience-end"
           name="end"
           value={workExperience.end}
-          onChange={onWorkExperienceChange}
+          onChange={onChange}
           type="text"
         />
+        <button onClick={onDelete}>delete</button>
       </form>
     </li>
   );
 }
 
-function InputWorkExperienceSectionForm(
-  workExperienceFormValues,
-  onWorkExperienceChange
-) {
+function InputWorkExperienceSectionForm(workExperiences, onChange, onDelete) {
   return (
     <ul>
-      {workExperienceFormValues.workExperiences.map((workExperience) => {
-        return InputWorkExperienceItemForm(
-          workExperience,
-          onWorkExperienceChange
-        );
+      {workExperiences.map((workExperience) => {
+        return InputWorkExperienceItemForm(workExperience, onChange, onDelete);
       })}
     </ul>
   );
@@ -159,22 +154,25 @@ class InputWorkExperienceSection extends Component {
   render() {
     const {
       workExperiences,
-      workExperienceFormValues,
+      editMode,
+      formList,
+      onAdd,
+      onDelete,
+      onChange,
       onStartEditMode,
-      onWorkExperienceSubmit,
-      onWorkExperienceChange,
-      onWorkExperienceAdd,
+      onSubmit,
     } = this.props;
     return (
       <InputListSection
         header="Enter your work experience data"
-        editMode={workExperienceFormValues.editMode}
+        editMode={editMode}
         onStartEditMode={onStartEditMode}
-        onSubmit={onWorkExperienceSubmit}
-        onAddItem={onWorkExperienceAdd}
+        onSubmit={onSubmit}
+        onAdd={onAdd}
         editDisplay={InputWorkExperienceSectionForm(
-          workExperienceFormValues,
-          onWorkExperienceChange
+          formList,
+          onChange,
+          onDelete
         )}
         viewDisplay={InputWorkExperienceSectionDisplay(workExperiences)}
       />

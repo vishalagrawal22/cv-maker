@@ -51,7 +51,7 @@ class InputListSection extends Component {
       editMode,
       onStartEditMode,
       onSubmit,
-      onAddItem,
+      onAdd,
       editDisplay,
       viewDisplay,
     } = this.props;
@@ -62,7 +62,7 @@ class InputListSection extends Component {
           <div className="input-section-display">
             {editDisplay}
             <div className="input-action-buttons">
-              <button onClick={onAddItem}>add</button>
+              <button onClick={onAdd}>add</button>
               <button onClick={onSubmit}>submit</button>
             </div>
           </div>,
